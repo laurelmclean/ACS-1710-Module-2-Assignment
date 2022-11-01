@@ -101,7 +101,20 @@ def calculator():
 @app.route('/calculator_results')
 def calculator_results():
     """Shows the user the result of their calculation."""
-    pass
+    operand1 = int(request.args.get('operand1'))
+    operand2 = int(request.args.get('operand2'))
+    operator = request.args.get('operation')
+
+    if operator == "add":
+        result = operand1 + operand2
+    elif operator == "subtract":
+        result = operand1 - operand2
+    elif operator == "multiply":
+        result = operand1 * operand2
+    elif operator == "divide":
+        result = operand1 / operand2
+
+    return f'You chose to {operator} {operand1} and {operand2}. Your result is: {result}'
 
 
 HOROSCOPE_PERSONALITIES = {
