@@ -14,15 +14,29 @@ def homepage():
     """A homepage with handy links for your convenience."""
     return render_template('home.html')
 
+# The action = attribute specifies which URL the user will be sent to when they submit the form. Here, the user will be sent to the URL / froyo_results/.
+# The method = attribute specifies the HTTP method the form will use to submit its results. It can be either GET or POST.
+# At least one input field for the user to enter data. An input field with type = "text" will accept a text input. Each input field must contain a name = attribute, which will be used to retrieve the data later.
+# A submit button.
+
 @app.route('/froyo')
 def choose_froyo():
     """Shows a form to collect the user's Fro-Yo order."""
-    pass
-
+    return """
+    <form action="/froyo_results" method="GET">
+        What is your favorite Fro-Yo flavor? <br/>
+        <input type="text" name="flavor"><br/>
+        What toppings would you like? <br/>
+        <input type="text" name="toppings"><br/>
+        <input type="submit" value="Submit!">
+    </form>
+    """
+# request.args is a dictionary storing data as key value pairs we can retrieve with get
 @app.route('/froyo_results')
 def show_froyo_results():
-    """Shows the user what they ordered from the previous page."""
-    pass
+    users_froyo_flavor = request.args.get('flavor')
+    users_toppings = request.args.get('toppings')
+    return f'You ordered {users_froyo_flavor} flavored Fro-Yo with toppings {users_toppings}!'
 
 @app.route('/favorites')
 def favorites():
