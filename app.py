@@ -77,27 +77,20 @@ def message_results():
 @app.route('/calculator')
 def calculator():
     """Shows the user a form to enter 2 numbers and an operation."""
-    return """
-    <form action="/calculator_results" method="GET">
-        Please enter 2 numbers and select an operator.<br/><br/>
-        <input type="number" name="operand1">
-        <select name="operation">
-            <option value="add">+</option>
-            <option value="subtract">-</option>
-            <option value="multiply">*</option>
-            <option value="divide">/</option>
-        </select>
-        <input type="number" name="operand2">
-        <input type="submit" value="Submit!">
-    </form>
-    """
+    return render_template('calculator_form.html')
 
 @app.route('/calculator_results')
 def calculator_results():
     """Shows the user the result of their calculation."""
-    operand1 = int(request.args.get('operand1'))
-    operand2 = int(request.args.get('operand2'))
-    operator = request.args.get('operation')
+    context = {
+    'operand1' : int(request.args.get('operand1')),
+    'operand2' : int(request.args.get('operand2')),
+    'operator' : request.args.get('operation'),
+    }
+
+    operand1 = context['operand1']
+    operand2 = context['operand2']
+    operator = context['operator']
 
     if operator == "add":
         result = operand1 + operand2
@@ -107,8 +100,9 @@ def calculator_results():
         result = operand1 * operand2
     elif operator == "divide":
         result = operand1 / operand2
-
-    return f'You chose to {operator} {operand1} and {operand2}. Your result is: {result}'
+    context['result'] = result
+    
+    return render_template('calculator_results.html', **context)
 
 
 HOROSCOPE_PERSONALITIES = {
